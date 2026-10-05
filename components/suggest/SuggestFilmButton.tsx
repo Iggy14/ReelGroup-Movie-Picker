@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import SuggestModal from "@/components/suggest/SuggestModal";
 
 interface SuggestFilmButtonProps {
@@ -19,7 +20,13 @@ export default function SuggestFilmButton({ groupId }: SuggestFilmButtonProps) {
         Suggest a Film
       </button>
 
-      {open && <SuggestModal groupId={groupId} onClose={() => setOpen(false)} />}
+      {/* Portal to <body>: the navbar's backdrop-blur makes it the containing
+          block for fixed descendants, which would trap the modal inside it. */}
+      {open &&
+        createPortal(
+          <SuggestModal groupId={groupId} onClose={() => setOpen(false)} />,
+          document.body
+        )}
     </>
   );
 }

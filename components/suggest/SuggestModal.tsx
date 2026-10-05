@@ -86,7 +86,7 @@ export default function SuggestModal({ groupId, onClose }: SuggestModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 animate-fade-in">
-    <div className="w-full max-w-md bg-surface border border-surface-border rounded-xl p-6 animate-modal-in">
+    <div className="w-full max-w-md max-h-full overflow-y-auto bg-surface border border-surface-border rounded-xl p-6 animate-modal-in">
     <div className="flex items-start justify-between mb-1">
           <div>
             <h2 className="text-2xl font-display text-foreground">Suggest a Film</h2>
