@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ReelGroup
+
+A group movie-decision app: friends suggest films, vote, mark movies as watched, and settle ties with a live "Decide Now" session.
+
+## Features
+
+- **Groups** — create a group or join one with an invite code
+- **Suggest** — search TMDB and add a film with an optional reason
+- **Vote** — up/down votes with optimistic UI; the top-voted film becomes Tonight's Pick
+- **Decide Now** — a live bracket where each member makes a final pick; ties spawn a runoff automatically
+- **Seen it** — per-member watched tracking and a full history, plus an "Everyone's Seen" row
+- **Movie details modal** — overview, genres, rating and reason on any card
+- **Realtime** — pages refresh on Postgres changes via Supabase Realtime
+- **Auth** — email/password sign-up, login, and password reset
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router) with React 19 and TypeScript
+- [Supabase](https://supabase.com) — Postgres, Auth, Row Level Security, Realtime (`@supabase/ssr`)
+- [TMDB API](https://www.themoviedb.org/documentation/api) for movie data
+- Tailwind CSS 4 and lucide-react icons
+- Hosted on Vercel
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Copy the example env file and fill in the values:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   cp .env.local.example .env.local
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   | Variable | Purpose |
+   |---|---|
+   | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key |
+   | `SUPABASE_SERVICE_ROLE_KEY` | Server-only; used by backfill scripts (bypasses RLS) |
+   | `TMDB_API_KEY` | TMDB search proxy (kept server-side) |
+   | `GEMINI_API_KEY` | Reserved for planned AI features; not used yet |
 
-## Learn More
+3. In Supabase, add your site URL and `/reset-password` to Auth → URL Configuration → Redirect URLs so password reset emails work.
 
-To learn more about Next.js, take a look at the following resources:
+4. Start the dev server and open [http://localhost:3000](http://localhost:3000):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the development server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint |
+| `node --env-file=.env scripts/backfill-genres.mjs [--apply]` | Backfill `movies.genre` for older rows (dry run unless `--apply`) |
+| `node --env-file=.env scripts/backfill-overviews.mjs [--apply]` | Backfill `movies.overview` for older rows |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The backfill scripts need `SUPABASE_SERVICE_ROLE_KEY` and `TMDB_API_KEY` in `.env`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Documentation
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — project structure, data model, and key patterns
+- [`docs/TODO.md`](docs/TODO.md) — deferred work
+
+## Deployment
+
+Deploy on [Vercel](https://vercel.com/new) and set the same environment variables in the project settings.
