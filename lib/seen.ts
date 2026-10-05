@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export interface SeenMovie {
   id: string;
+  reason: string | null;
+  suggestedBy: string;
   movie: {
     id: string;
     title: string;
@@ -9,6 +11,7 @@ export interface SeenMovie {
     genre: string | null;
     posterUrl: string | null;
     rating: number | null;
+    overview: string | null;
   };
 }
 
@@ -19,14 +22,15 @@ export async function getGroupSeen(groupId: string): Promise<SeenMovie[]> {
     .from("suggestions")
     .select(
       `
-      id,
+      id, reason, suggested_by,
       movie:movies (
         id,
         title,
         year,
         genre,
         poster_url,
-        rating
+        rating,
+        overview
       )
     `
     )
@@ -43,6 +47,8 @@ export async function getGroupSeen(groupId: string): Promise<SeenMovie[]> {
     const movie = Array.isArray(row.movie) ? row.movie[0] : row.movie;
     return {
       id: row.id,
+      reason: row.reason,
+      suggestedBy: row.suggested_by,
       movie: {
         id: movie.id,
         title: movie.title,
@@ -50,6 +56,7 @@ export async function getGroupSeen(groupId: string): Promise<SeenMovie[]> {
         genre: movie.genre,
         posterUrl: movie.poster_url,
         rating: movie.rating,
+        overview: movie.overview,
       },
     };
   });

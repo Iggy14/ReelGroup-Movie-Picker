@@ -1,6 +1,6 @@
 import { getCurrentGroup } from "@/lib/group";
 import { getGroupSeen } from "@/lib/seen";
-import PosterCard from "@/components/ui/PosterCard";
+import MovieCard from "@/components/ui/MovieCard";
 import RealtimeRefresh from "@/components/realtime/RealtimeRefresh";
 
 export default async function SeenItPage() {
@@ -31,15 +31,15 @@ export default async function SeenItPage() {
           Nothing watched together yet — mark films as watched from the Watchlist.
         </p>
       ) : (
-        <div className="flex gap-6 flex-wrap mt-8">
+        <div className="flex gap-4 sm:gap-6 flex-wrap mt-8">
           {seen.map((item) => (
-            <PosterCard
+            <MovieCard
               key={item.id}
-              title={item.movie.title}
-              year={item.movie.year ?? 0}
-              genre={item.movie.genre ?? ""}
-              posterUrl={item.movie.posterUrl ?? ""}
-              rating={item.movie.rating ?? undefined}
+              movie={{
+                ...item.movie,
+                reason: item.reason,
+                suggestedByName: group.members.find((m) => m.user_id === item.suggestedBy)?.display_name,
+              }}
             />
           ))}
         </div>

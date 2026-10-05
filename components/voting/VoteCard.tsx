@@ -5,6 +5,7 @@ import { ThumbsUp, ThumbsDown, Check } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import PosterCard from "@/components/ui/PosterCard";
 import Badge from "@/components/ui/Badge";
+import MovieDetailsModal from "@/components/ui/MovieDetailsModal";
 import type { SuggestionWithVotes } from "@/lib/votes";
 
 interface VoteCardProps {
@@ -27,6 +28,7 @@ export default function VoteCard({
   suggestedByName,
 }: VoteCardProps) {
   const [supabase] = useState(() => createClient());
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   const [optimisticVote, setOptimisticVote] = useState<OptimisticVote>(null);
   const [optimisticIWatched, setOptimisticIWatched] = useState<boolean | null>(
@@ -134,17 +136,7 @@ export default function VoteCard({
     }
   }
 
-  return (
-    <PosterCard
-      title={suggestion.movie.title}
-      year={suggestion.movie.year ?? 0}
-      genre={suggestion.movie.genre ?? ""}
-      posterUrl={suggestion.movie.posterUrl ?? ""}
-      rating={suggestion.movie.rating ?? undefined}
-      badge={<Badge>{badgeText}</Badge>}
-      overview={suggestion.movie.overview ?? undefined}
-      suggestedByName={suggestedByName}
-      footer={
+  const controls = (
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <button
@@ -190,7 +182,33 @@ export default function VoteCard({
             {watchedCount > 0 && ` (${watchedCount}/${memberCount})`}
           </button>
         </div>
-      }
-    />
+  );
+
+  return (
+    <>
+      <PosterCard
+        title={suggestion.movie.title}
+        year={suggestion.movie.year ?? 0}
+        genre={suggestion.movie.genre ?? ""}
+        posterUrl={suggestion.movie.posterUrl ?? ""}
+        rating={suggestion.movie.rating ?? undefined}
+        badge={<Badge>{badgeText}</Badge>}
+        overview={suggestion.movie.overview ?? undefined}
+        suggestedByName={suggestedByName}
+        footer={controls}
+        onSelect={() => setDetailsOpen(true)}
+      />
+      <MovieDetailsModal
+        movie={{ ...suggestion.movie, suggestedByName, reason: suggestion.reason }}
+        open={detailsOpen}
+        onClose={() => setDetailsOpen(false)}
+        actions={
+          <div className="space-y-3">
+            <Badge>{badgeText}</Badge>
+            {controls}
+          </div>
+        }
+      />
+    </>
   );
 }

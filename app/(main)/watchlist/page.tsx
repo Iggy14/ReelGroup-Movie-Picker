@@ -52,7 +52,7 @@ export default async function WatchlistPage() {
         </p>
 
       ) : (
-        <div className="flex gap-6 flex-wrap mt-8">
+        <div className="flex gap-4 sm:gap-6 flex-wrap mt-8">
           {suggestions.map((suggestion) => (
             <VoteCard
               key={suggestion.id}

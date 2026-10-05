@@ -4,7 +4,7 @@ import { getGroupSeen } from "@/lib/seen";
 import MovieRow from "@/components/tonight/MovieRow";
 import Badge from "@/components/ui/Badge";
 import RealtimeRefresh from "@/components/realtime/RealtimeRefresh";
-import PosterCard from "@/components/ui/PosterCard";
+import MovieCard from "@/components/ui/MovieCard";
 
 export default async function TonightPage() {
   const group = await getCurrentGroup();
@@ -36,21 +36,23 @@ export default async function TonightPage() {
       <RealtimeRefresh table="suggestions" filter={`group_id=eq.${group.id}`} />
 
       {topPick ? (
-        <section className="flex gap-8 items-start">
-          <PosterCard
-            title={topPick.movie.title}
-            year={topPick.movie.year ?? 0}
-            genre={topPick.movie.genre ?? ""}
-            posterUrl={topPick.movie.posterUrl ?? ""}
-            rating={topPick.movie.rating ?? undefined}
+        <section className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+          <MovieCard
+            movie={{
+              ...topPick.movie,
+              suggestedByName: nameFor(topPick.suggestedBy),
+              reason: topPick.reason,
+            }}
             size="lg"
+            posterOnly
             badge={<Badge>Tonight&apos;s Pick</Badge>}
           />
-          <div className="pt-4">
+          <div className="md:pt-4">
             <p className="text-xs tracking-widest text-gold uppercase">Tonight&apos;s Pick</p>
-            <h1 className="text-5xl font-display text-foreground mt-2">{topPick.movie.title}</h1>
+            <h1 className="text-3xl sm:text-5xl font-display text-foreground mt-2">{topPick.movie.title}</h1>
             <p className="text-muted mt-3">
               {topPick.movie.year} · {topPick.movie.genre || "Unknown genre"}
+              {topPick.movie.rating != null && <span className="text-gold"> · ★ {topPick.movie.rating.toFixed(1)}</span>}
             </p>
             {topPick.movie.overview && (
               <p className="text-foreground/80 mt-4 max-w-xl">{topPick.movie.overview}</p>
@@ -81,6 +83,8 @@ export default async function TonightPage() {
           genre: s.movie.genre,
           posterUrl: s.movie.posterUrl,
           rating: s.movie.rating,
+          overview: s.movie.overview,
+          reason: s.reason,
           suggestedByName: nameFor(s.suggestedBy),
         }))}
         emptyText="No other suggestions right now."
@@ -96,6 +100,9 @@ export default async function TonightPage() {
           genre: s.movie.genre,
           posterUrl: s.movie.posterUrl,
           rating: s.movie.rating,
+          overview: s.movie.overview,
+          reason: s.reason,
+          suggestedByName: nameFor(s.suggestedBy),
         }))}
         emptyText="Nothing watched together yet."
       />

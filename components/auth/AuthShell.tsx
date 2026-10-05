@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -36,9 +37,14 @@ export default function AuthShell({ children }: { children: React.ReactNode }) {
         />
 
         <div className="relative z-10 flex flex-col justify-between p-14 w-full">
-          <span className="font-display text-2xl tracking-wide text-gold">
-            REELGROUP
-          </span>
+          <Image
+            src="/reelgroup-logo.png"
+            alt="ReelGroup"
+            width={613}
+            height={540}
+            priority
+            className="h-28 w-auto self-start"
+          />
 
           <div>
             <blockquote className="font-display italic text-4xl text-foreground/90 leading-snug max-w-lg">

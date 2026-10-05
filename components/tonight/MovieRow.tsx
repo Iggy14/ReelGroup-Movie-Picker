@@ -1,19 +1,9 @@
-import PosterCard from "@/components/ui/PosterCard";
-
-interface MovieRowItem {
-  id: string;
-  title: string;
-  year: number | null;
-  genre: string | null;
-  posterUrl: string | null;
-  rating: number | null;
-  suggestedByName?: string;
-}
+import MovieCard, { type MovieCardItem } from "@/components/ui/MovieCard";
 
 interface MovieRowProps {
   title: string;
   subtitle?: string;
-  movies: MovieRowItem[];
+  movies: MovieCardItem[];
   emptyText: string;
 }
 
@@ -26,17 +16,9 @@ export default function MovieRow({ title, subtitle, movies, emptyText }: MovieRo
       {movies.length === 0 ? (
         <p className="text-muted mt-4">{emptyText}</p>
       ) : (
-        <div className="flex gap-6 flex-wrap mt-4">
+        <div className="flex gap-4 sm:gap-6 flex-wrap mt-4">
           {movies.map((movie) => (
-            <PosterCard
-              key={movie.id}
-              title={movie.title}
-              year={movie.year ?? 0}
-              genre={movie.genre ?? ""}
-              posterUrl={movie.posterUrl ?? ""}
-              rating={movie.rating ?? undefined}
-              suggestedByName={movie.suggestedByName}
-            />
+            <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       )}

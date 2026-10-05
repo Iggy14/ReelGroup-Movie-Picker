@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -100,9 +101,9 @@ export default function LoginPage() {
             </button>
           </div>
           <div className="text-right mt-1.5">
-            <span className="text-xs text-gold hover:underline cursor-not-allowed opacity-70">
+            <Link href="/forgot-password" className="text-xs text-gold hover:underline">
               Forgot password?
-            </span>
+            </Link>
           </div>
         </div>
 

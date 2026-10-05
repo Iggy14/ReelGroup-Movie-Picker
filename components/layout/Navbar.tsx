@@ -1,5 +1,6 @@
 import Link from "next/link";
-import AvatarStack from "@/components/layout/AvatarStack";
+import LogoLink from "@/components/layout/LogoLink";
+import MobileMenu from "@/components/layout/MobileMenu";
 import SuggestFilmButton from "@/components/suggest/SuggestFilmButton";
 import type { CurrentGroup } from "@/lib/group";
 interface NavbarProps {
@@ -15,14 +16,11 @@ const navLinks = [
 
 export default function Navbar({ group }: NavbarProps) {
   return (
-    <header className="border-b border-surface-border">
-      <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-10">
-          <Link href="/tonight" className="font-display text-xl tracking-wide text-gold">
-            REELGROUP
-          </Link>
+    <header className="sticky top-0 z-50 border-b border-surface-border bg-background/95 backdrop-blur">
+      <div className="max-w-[1600px] mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] px-4 sm:px-6 py-4">
+        <LogoLink />
 
-          <nav className="flex items-center gap-6">
+        <nav className="hidden md:flex items-center justify-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -33,13 +31,11 @@ export default function Navbar({ group }: NavbarProps) {
                 <span className="absolute left-0 -bottom-0.5 w-full h-px bg-gold scale-x-0 group-hover/link:scale-x-100 transition-transform duration-200 origin-left" />
 </Link>
             ))}
-          </nav>
-        </div>
+        </nav>
 
-        <div className="flex items-center gap-6">
-          
-
+        <div className="flex items-center gap-3 sm:gap-6 justify-self-end">
           {group && <SuggestFilmButton groupId={group.id} />}
+          <MobileMenu links={navLinks} />
         </div>
       </div>
     </header>

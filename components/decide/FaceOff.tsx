@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { SuggestionWithVotes } from "@/lib/votes";
+import MovieDetailsModal from "@/components/ui/MovieDetailsModal";
 
 interface FaceOffProps {
   suggestions: SuggestionWithVotes[];
@@ -13,6 +14,7 @@ export default function FaceOff({ suggestions, onWinner }: FaceOffProps) {
   const [nextRound, setNextRound] = useState<SuggestionWithVotes[]>([]);
   const [pairIndex, setPairIndex] = useState(0);
   const [roundNumber, setRoundNumber] = useState(1);
+  const [details, setDetails] = useState<SuggestionWithVotes | null>(null);
 
   const totalRounds = Math.ceil(Math.log2(suggestions.length));
 
@@ -21,6 +23,7 @@ export default function FaceOff({ suggestions, onWinner }: FaceOffProps) {
   const isBye = contenderA && !contenderB;
 
   function choose(winner: SuggestionWithVotes) {
+    setDetails(null);
     const updatedNextRound = [...nextRound, winner];
 
     if (pairIndex + 1 < Math.ceil(round.length / 2)) {
@@ -61,13 +64,23 @@ export default function FaceOff({ suggestions, onWinner }: FaceOffProps) {
         {[contenderA, contenderB].map((contender, i) => (
         <div key={contender.id} className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
         <div className="w-[200px] sm:w-[260px]">
-              <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface border border-surface-border">
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label={`View details for ${contender.movie.title}`}
+                onClick={() => setDetails(contender)}
+                onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setDetails(contender)}
+                className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface border border-surface-border cursor-pointer hover:border-gold/40 transition-colors"
+              >
                 {contender.movie.posterUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={contender.movie.posterUrl} alt={contender.movie.title} className="w-full h-full object-cover" />
                 )}
               </div>
-              <h2 className="text-2xl font-display text-foreground mt-3">{contender.movie.title}</h2>
+              <h2
+                onClick={() => setDetails(contender)}
+                className="text-2xl font-display text-foreground mt-3 cursor-pointer hover:text-gold transition-colors"
+              >{contender.movie.title}</h2>
               <p className="text-sm text-muted mt-1">
                 {contender.movie.year} · {contender.movie.genre || "Unknown genre"}
               </p>
@@ -84,6 +97,22 @@ export default function FaceOff({ suggestions, onWinner }: FaceOffProps) {
           </div>
         ))}
       </div>
+
+      {details && (
+        <MovieDetailsModal
+          movie={{ ...details.movie, reason: details.reason }}
+          open
+          onClose={() => setDetails(null)}
+          actions={
+            <button
+              onClick={() => choose(details)}
+              className="w-full bg-gold hover:bg-gold-hover text-background font-medium rounded-lg py-3 transition-colors"
+            >
+              Choose This
+            </button>
+          }
+        />
+      )}
 
       <button disabled className="mt-10 text-sm text-muted cursor-not-allowed">
         ✨ Split Decision? Let AI Decide — coming soon
