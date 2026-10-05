@@ -19,12 +19,19 @@ export interface CurrentGroup {
   inviteCode: string | null;
 }
 
-export const getCurrentGroup = cache(async (): Promise<CurrentGroup | null> => {
+// One Supabase Auth round-trip per request, shared by the layout, pages and getCurrentGroup.
+export const getCurrentUser = cache(async () => {
   const supabase = await createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  return user;
+});
+
+export const getCurrentGroup = cache(async (): Promise<CurrentGroup | null> => {
+  const supabase = await createClient();
+
+  const user = await getCurrentUser();
 
   if (!user) return null;
 

@@ -21,11 +21,12 @@ interface MovieCardProps {
   size?: "sm" | "md" | "lg";
   badge?: ReactNode;
   posterOnly?: boolean;
+  priority?: boolean;
 }
 
 // Read-only movie card: click opens the shared details modal.
 // Use this from server components; cards with controls (VoteCard) wire the modal themselves.
-export default function MovieCard({ movie, size, badge, posterOnly }: MovieCardProps) {
+export default function MovieCard({ movie, size, badge, posterOnly, priority }: MovieCardProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -41,6 +42,7 @@ export default function MovieCard({ movie, size, badge, posterOnly }: MovieCardP
         size={size}
         badge={badge}
         posterOnly={posterOnly}
+        priority={priority}
         onSelect={() => setOpen(true)}
       />
       <MovieDetailsModal

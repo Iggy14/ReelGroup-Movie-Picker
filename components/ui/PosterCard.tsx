@@ -17,6 +17,8 @@ interface PosterCardProps {
   onSelect?: () => void;
   /** Poster only, for layouts that show the text details beside the card. */
   posterOnly?: boolean;
+  /** Preload the poster — set on the above-the-fold (LCP) image only. */
+  priority?: boolean;
 }
 
 // md fills half the row on phones (parent grids use gap-4 below sm); lg is capped to the viewport.
@@ -28,7 +30,7 @@ const sizeClasses = {
 
 export default function PosterCard({
   title, year, genre, posterUrl, rating, overview, suggestedByName,
-  size = "md", badge, footer, avatars, onSelect, posterOnly,
+  size = "md", badge, footer, avatars, onSelect, posterOnly, priority,
 }: PosterCardProps) {
   const selectable = onSelect
     ? {
@@ -56,6 +58,7 @@ export default function PosterCard({
             src={posterUrl}
             alt={title}
             fill
+            priority={priority}
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
             sizes="(max-width: 768px) 40vw, 220px"
           />

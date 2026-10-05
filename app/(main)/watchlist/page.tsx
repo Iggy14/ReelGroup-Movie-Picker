@@ -1,7 +1,6 @@
-import { getCurrentGroup } from "@/lib/group";
+import { getCurrentGroup, getCurrentUser } from "@/lib/group";
 import { getGroupSuggestions } from "@/lib/votes";
 import { getGroupWatched } from "@/lib/watched";
-import { createClient } from "@/lib/supabase/server";
 import VoteCard from "@/components/voting/VoteCard";
 import RealtimeRefresh from "@/components/realtime/RealtimeRefresh";
 import Link from "next/link";
@@ -17,10 +16,7 @@ export default async function WatchlistPage() {
     );
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   const [suggestions, watchedMap] = await Promise.all([
     getGroupSuggestions(group.id),

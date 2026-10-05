@@ -1,5 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
-import { getCurrentGroup } from "@/lib/group";
+import { getCurrentGroup, getCurrentUser } from "@/lib/group";
 import { getMemberStats } from "@/lib/memberStats";
 import LogoutButton from "@/components/layout/LogoutButton";
 import InviteCodeBox from "@/components/members/InviteCodeBox";
@@ -19,10 +18,7 @@ function formatMonthYear(iso: string) {
 
 export default async function MembersPage() {
   const group = await getCurrentGroup();
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!group || !user) {
     return (

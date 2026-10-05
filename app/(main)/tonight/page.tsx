@@ -45,6 +45,7 @@ export default async function TonightPage() {
             }}
             size="lg"
             posterOnly
+            priority
             badge={<Badge>Tonight&apos;s Pick</Badge>}
           />
           <div className="md:pt-4">
