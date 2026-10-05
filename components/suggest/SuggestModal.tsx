@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { useScrollLock } from "@/lib/useScrollLock";
 import { createClient } from "@/lib/supabase/client";
 import type { TmdbSearchResult } from "@/lib/tmdb";
 import MovieSearchInput from "@/components/suggest/MovieSearchInput";
@@ -14,6 +15,7 @@ interface SuggestModalProps {
 }
 
 export default function SuggestModal({ groupId, onClose }: SuggestModalProps) {
+  useScrollLock(true);
   const router = useRouter();
   const supabase = createClient();
 
@@ -86,7 +88,7 @@ export default function SuggestModal({ groupId, onClose }: SuggestModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 animate-fade-in">
-    <div className="w-full max-w-md max-h-full overflow-y-auto bg-surface border border-surface-border rounded-xl p-6 animate-modal-in">
+    <div className="w-full max-w-md max-h-full overflow-y-auto overscroll-contain bg-surface border border-surface-border rounded-xl p-6 animate-modal-in">
     <div className="flex items-start justify-between mb-1">
           <div>
             <h2 className="text-2xl font-display text-foreground">Suggest a Film</h2>

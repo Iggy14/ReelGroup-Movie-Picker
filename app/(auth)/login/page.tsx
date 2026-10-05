@@ -137,11 +137,11 @@ export default function LoginPage() {
             placeholder="REEL-XXXX-XXXX"
             value={inviteCode}
             onChange={(e) => setInviteCode(e.target.value)}
-            className="flex-1 bg-background border border-surface-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-gold"
+            className="flex-1 min-w-0 bg-background border border-surface-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted focus:outline-none focus:border-gold"
           />
           <button
             type="submit"
-            className="bg-gold hover:bg-gold-hover text-background text-sm font-medium rounded-lg px-4 transition-colors"
+            className="shrink-0 bg-gold hover:bg-gold-hover text-background text-sm font-medium rounded-lg px-4 transition-colors"
           >
             Join
           </button>

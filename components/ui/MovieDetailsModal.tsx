@@ -3,6 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 export interface MovieDetails {
   title: string;
@@ -27,6 +28,7 @@ interface MovieDetailsModalProps {
 // blurred ::backdrop come from the browser.
 export default function MovieDetailsModal({ movie, open, onClose, actions }: MovieDetailsModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  useScrollLock(open);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -44,7 +46,7 @@ export default function MovieDetailsModal({ movie, open, onClose, actions }: Mov
       onClick={(e) => e.target === e.currentTarget && onClose()}
       className="m-auto w-[calc(100%-2rem)] max-w-3xl max-h-[90vh] bg-transparent p-0 text-foreground backdrop:bg-black/60 backdrop:backdrop-blur-md"
     >
-      <div className="relative flex flex-col sm:flex-row gap-5 sm:gap-8 max-h-[90vh] overflow-y-auto rounded-xl border border-surface-border bg-surface p-5 sm:p-8 shadow-2xl shadow-black/60">
+      <div className="relative flex flex-col sm:flex-row gap-5 sm:gap-8 max-h-[90vh] overflow-y-auto overscroll-contain rounded-xl border border-surface-border bg-surface p-5 sm:p-8 shadow-2xl shadow-black/60">
         <button
           type="button"
           onClick={onClose}

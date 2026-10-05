@@ -34,8 +34,8 @@ export default async function MembersPage() {
 
   return (
     <div className="flex flex-col md:flex-row min-h-[calc(100vh-73px)]">
-      <aside className="w-full md:w-72 flex-shrink-0 border-b md:border-b-0 md:border-r border-surface-border p-6 md:p-8 flex flex-col">
-        <div className="flex flex-col items-center text-center">
+      <aside className="contents md:flex md:flex-col md:w-72 md:flex-shrink-0 md:border-r md:border-surface-border md:p-8">
+        <div className="order-1 md:order-none flex flex-col items-center text-center p-6 md:p-0 border-b border-surface-border md:border-b-0">
           {currentMember?.avatar_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -63,28 +63,30 @@ export default async function MembersPage() {
           <p className="text-xs text-muted mt-1">{user.email}</p>
         </div>
 
-        <div className="border-t border-surface-border mt-6 pt-6">
-          <p className="text-xs tracking-widest text-muted uppercase mb-3">
-            Your Stats
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="border border-surface-border rounded-lg p-3 text-center">
-              <p className="text-2xl font-display text-gold">{myStats.watched}</p>
-              <p className="text-xs text-muted mt-0.5">Watched</p>
-            </div>
-            <div className="border border-surface-border rounded-lg p-3 text-center">
-              <p className="text-2xl font-display text-gold">{myStats.suggested}</p>
-              <p className="text-xs text-muted mt-0.5">Suggested</p>
+        <div className="order-3 md:order-none flex flex-col md:flex-1 p-6 pt-0 md:p-0">
+          <div className="border-t border-surface-border mt-6 pt-6">
+            <p className="text-xs tracking-widest text-muted uppercase mb-3">
+              Your Stats
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="border border-surface-border rounded-lg p-3 text-center">
+                <p className="text-2xl font-display text-gold">{myStats.watched}</p>
+                <p className="text-xs text-muted mt-0.5">Watched</p>
+              </div>
+              <div className="border border-surface-border rounded-lg p-3 text-center">
+                <p className="text-2xl font-display text-gold">{myStats.suggested}</p>
+                <p className="text-xs text-muted mt-0.5">Suggested</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-auto pt-6">
-          <LogoutButton />
+          <div className="mt-auto pt-6">
+            <LogoutButton />
+          </div>
         </div>
       </aside>
 
-      <main className="flex-1 p-6 md:p-10">
+      <main className="order-2 md:order-none flex-1 p-6 md:p-10">
         <p className="text-xs tracking-widest text-gold uppercase border border-gold/40 inline-block rounded px-2 py-1">
           Your Group
         </p>
